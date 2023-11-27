@@ -1,0 +1,96 @@
+#include <stdio.h>
+#include <string.h>
+
+int obterValor(char c) {
+    if (c == 'I')
+        return 1;
+    if (c == 'V')
+        return 5;
+    if (c == 'X')
+        return 10;
+    if (c == 'L')
+        return 50;
+    if (c == 'C')
+        return 100;
+    if (c == 'D')
+        return 500;
+    if (c == 'M')
+        return 1000;
+    return -1;
+}
+
+int converterRomanoParaInteiro(char *s) {
+    int resultado = 0;
+
+    for (int i = 0; s[i] != '\0'; i++) {
+        int valorAtual = obterValor(s[i]);
+
+        if (s[i + 1] != '\0') {
+            int valorProximo = obterValor(s[i + 1]);
+
+            if (valorAtual >= valorProximo) {
+                resultado = resultado + valorAtual;
+            } else {
+                resultado = resultado + valorProximo - valorAtual;
+                i++;
+            }
+        } else {
+            resultado = resultado + valorAtual;
+        }
+    }
+
+    return resultado;
+}
+
+void converterDecimalParaBinario(int decimal) {
+    int binario[1000];
+    int indice = 0;
+
+    while (decimal > 0) {
+        binario[indice] = decimal % 2;
+        decimal = decimal / 2;
+        indice++;
+    }
+
+    for (int j = indice - 1; j >= 0; j--) {
+        printf("%d", binario[j]);
+    }
+    printf("\n");
+}
+
+void converterDecimalParaHexadecimal(int decimal) {
+    char hexadecimalNum[20];
+    int indice = 0;
+
+    while (decimal > 0) {
+        int resto = decimal % 16;
+
+        if (resto < 10) {
+            hexadecimalNum[indice] = resto + 48;
+        } else {
+            hexadecimalNum[indice] = resto + 87;
+        }
+
+        indice++;
+        decimal = decimal / 16;
+    }
+
+    for (int i = indice - 1; i >= 0; i--) {
+        printf("%c", hexadecimalNum[i]);
+    }
+
+    printf("\n");
+}
+
+int main() {
+    char numeroRomano[20];
+    scanf("%s", numeroRomano);
+    int resultado = converterRomanoParaInteiro(numeroRomano);
+    printf("%s na base 2: ", numeroRomano);
+    converterDecimalParaBinario(resultado);
+    printf("%s na base 10: %d\n", numeroRomano, resultado);
+    printf("%s na base 16: ", numeroRomano);
+    converterDecimalParaHexadecimal(resultado);
+
+    return 0;
+}
